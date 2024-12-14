@@ -1,0 +1,1 @@
+# try to find ideal periods of time with most twilight to travel across Norway

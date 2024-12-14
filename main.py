@@ -4,7 +4,6 @@ from astral.sun import elevation
 from datetime import datetime, timedelta
 import csv #todo: use pandas for xlsx
 
-TWILIGHT = 6 # degrees
 PRECISION = 1 # minutes
 
 def twilight_minutes_day(latitude, date):
@@ -17,7 +16,7 @@ def twilight_minutes_day(latitude, date):
     
     while current_time <= end_time:
         elev = elevation(location.observer, current_time) #todo: add diffraction correction? or not really relevant for twilight?
-        if abs(elev) <= TWILIGHT:
+        if -4 <= elev <= 6:
             total_minutes += PRECISION
         current_time += timedelta(minutes=PRECISION)
     

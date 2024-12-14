@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 import csv #todo: use pandas for xlsx
 
 TWILIGHT = 6 # degrees
-PRECISION = 0.25 # minutes
+PRECISION = 1 # minutes
 
 def twilight_minutes_day(latitude, date):
     location = LocationInfo(name="Custom Location", region="Custom Region", latitude=latitude, longitude=0)
@@ -38,7 +38,7 @@ def process_latitude(latitude):
 
 def main():
     start_time = datetime.now()
-    latitudes = range(60, 71, 2)
+    latitudes = [59.91, 59.13, 59.97, 61.9, 63.25, 65.46, 66.74, 67.96, 69.49, 70.51, 70.2, 70.2, 68.55, 65.32, 62.52, 60.99, 59.91]
     timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
     filename = f"sun_elevation_minutes_{timestamp}.csv"
     

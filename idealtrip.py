@@ -1,7 +1,9 @@
 import csv
-from datetime import datetime
+from datetime import datetime, timedelta
 from astral import LocationInfo
-from astral.sun import golden_hour, SunDirection
+from astral.sun import elevation
+
+PRECISION = 0.1 # minutes
 
 # Read the dates and latitudes from the CSV file
 latitude_dates = []
@@ -16,21 +18,36 @@ with open('latitude_dates.csv', 'r') as file:
 # Calculate the golden hour times and store them in a dictionary
 golden_hours = {}
 for date, latitude in latitude_dates:
-    location = LocationInfo(latitude=latitude, longitude=0)  # Assuming longitude is 0
-    try:
-        gh_morning = golden_hour(location.observer, date=date, direction=SunDirection.RISING, tzinfo=location.timezone)
-    except ValueError:
-        gh_morning = (None, None)
-    try:
-        gh_evening = golden_hour(location.observer, date=date, direction=SunDirection.SETTING, tzinfo=location.timezone)
-    except ValueError:
-        gh_evening = (None, None)
+    location = LocationInfo(name="Custom Location", region="Custom Region", latitude=latitude, longitude=0)
+    start_time = datetime.combine(date, datetime.min.time())
+    end_time = datetime.combine(date, datetime.max.time())
+    
+    current_time = start_time
+    total_minutes = 0
+
+    gh_times = []
+    
+    while current_time <= end_time:
+        current_elevation = elevation(location.observer, current_time)
+        
+        if current_time == start_time and -4 <= current_elevation <= 6:
+            gh_times.append(current_time)
+        
+        if len(gh_times) % 2 == 0 and current_elevation >= -4 and current_elevation <= 6:
+            gh_times.append(current_time)
+        elif len(gh_times) % 2 == 1 and (current_elevation < -4 or current_elevation > 6):
+            gh_times.append(current_time)
+        
+        current_time += timedelta(minutes=PRECISION)
+    
+    if -4 <= elevation(location.observer, end_time) <= 6:
+        gh_times.append(end_time)
     
     golden_hours[date] = {
-        'morning_start': gh_morning[0] if gh_morning[0] else '',
-        'morning_end': gh_morning[1] if gh_morning[1] else '',
-        'evening_start': gh_evening[0] if gh_evening[0] else '',
-        'evening_end': gh_evening[1] if gh_evening[1] else ''
+        'morning_start': gh_times[0] if len(gh_times) > 0 else '',
+        'morning_end'  : gh_times[1] if len(gh_times) > 1 else '',
+        'evening_start': gh_times[2] if len(gh_times) > 2 else '',
+        'evening_end'  : gh_times[3] if len(gh_times) > 3 else ''
     }
 
 # Write the results to a new CSV file
@@ -40,4 +57,10 @@ with open(f'golden_hour_by_day_{timestamp}.csv', 'w', newline='') as file:
     header = ['Date', 'Morning Start', 'Morning End', 'Evening Start', 'Evening End']
     writer.writerow(header)
     for date, times in golden_hours.items():
-        writer.writerow([date.strftime('%Y-%m-%d'), times['morning_start'], times['morning_end'], times['evening_start'], times['evening_end']])
+        writer.writerow([
+            date.strftime('%Y-%m-%d'),
+            times['morning_start'].strftime('%H:%M') if times['morning_start'] else '',
+            times['morning_end'].strftime('%H:%M') if times['morning_end'] else '',
+            times['evening_start'].strftime('%H:%M') if times['evening_start'] else '',
+            times['evening_end'].strftime('%H:%M') if times['evening_end'] else ''
+        ])

@@ -14,6 +14,10 @@ The latitudes currently listed in DESIRED_LATITUDES were from a mockup driving t
 
 The script `idealtrip.py` takes a list of dates and latitudes in `data_input\latitude_dates.csv` (which were presumably previously determined to be an ideal trip based on looking at results in GH_times) and returns `data_output\GH_times_<timestamp>.csv`, containing the start and end time of morning and evening golden hour for each date at the given latitude.
 
+## tripsplit.py
+
+WIP to take driving directions and split into days and return latitudes to use in `latitude_dates.csv`.
+
 ## Requirements
 
 ### Python version

@@ -1,10 +1,12 @@
-# Introduction
+# Overview
+
+## Introduction
 
 This is my second attempt to build some tools to help me find ideal times for photography in various parts of the world, and explore related things.
 
 This project also serves as a playground as I explore using AI to help write and iterate over my code.
 
-# General concept
+## General concept
 
 I enjoy photography. I wanted to investigate what locations and days of the year have longer periods of "[Golden Hour](https://en.wikipedia.org/wiki/Golden_hour_(photography))" light. Golden Hour refers to the times near sunrise and sunset when ambient lighting is softer and warmer, which can make for very pleasing sky colors, views, and photographs.
 
@@ -12,21 +14,23 @@ There are varying opinions on what constitutes Golden Hour. For this program, I 
 
 There are a few tools here, which are explained below. `GH_daterange` is more user friendly than the others and can be easily downloaded on Windows and will list the Golden Hour times across a given date range.
 
-# Future plans
+## Future plans
 
 Ideally I'll create a GUI that can be used to interact with these tools.
 
-# Edge cases
+## Edge cases
 
-## Polar day/polar night
+### Polar day/polar night
 
 Inside the arctic circles, there are times when the sun is near the horizon for much longer. At the poles, there are several consecutive days at the equinoxes where the sun is within the golden hour or twilight ranges all day. This program is designed to handle these cases well.
 
-## Diffraction of sunlight
+### Diffraction of sunlight
 
 When the sun is near the horizon, there is some [diffraction](https://en.wikipedia.org/wiki/Atmospheric_refraction) of its light, causing the sun to become visible to a viewer on the earth at the horizon a few minutes sooner than expected (and also delaying the apparent sunset). This program does not currently account for this, as diffraction is reduced at the points of concern (4 degrees below the horizon, 6 degrees above). Hopefully in a future version I'll be able to account for this.
 
-# GH_daterange
+# Programs
+
+## GH_daterange
 
 This program is designed to be user friendly. You simply input a start date, an end date, and a city, and it will display the times when golden hour begins and ends on those dates. It only runs on Windows.
 
@@ -34,17 +38,17 @@ To use it, simply download the `GH_daterange` executable from the [latest releas
 
 It uses `calculate_golden_hours` from `idealtrip.py`.
 
-# main.py
+## main.py
 
 The script `main.py` takes a list of latitudes given in DESIRED_LATITUDES (defined as a constant) and returns `data_output\GH_duration_fullyear_<timestamp>.csv`, containing the duration of "golden hour" (defined as the sun being between 4 degrees below and 6 degrees above the horizon) for every day of the year at every listed latitude. The idea is to be able to visualize what times of year have more "golden hour" light at various locations, which is ideal for photography. A quick line chart in Excel will visualize it well.
 
 The latitudes currently listed in DESIRED_LATITUDES were from a mockup driving trip. Try replacing these with `list(range(60, 91, 5))` to get a better visualization at the latitudes where golden hour can be particularly long.
 
-# idealtrip.py
+## idealtrip.py
 
 The script `idealtrip.py` takes a list of dates and latitudes in `data_input\latitude_dates.csv` (which were presumably previously determined to be an ideal trip based on looking at results in GH_times) and returns `data_output\GH_times_<timestamp>.csv`, containing the start and end time of morning and evening golden hour for each date at the given latitude.
 
-# tripsplit.py
+## tripsplit.py
 
 WIP to take driving directions and split into days and return latitudes to use in `latitude_dates.csv`.
 
@@ -56,6 +60,6 @@ Below are the requirements for running the Python scripts natively. (The Windows
 
 Developed on 3.13; should run on 3.6+
 
-### Libraries
+## Libraries
 
 os, datetime, csv, logging, pathlib, typing, multiprocessing, psutil, astral, geopy

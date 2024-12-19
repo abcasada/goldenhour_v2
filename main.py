@@ -7,6 +7,8 @@ import os
 import psutil
 
 PRECISION = 1 # minutes
+DESIRED_LATITUDES = [59.91, 59.13, 59.97, 61.9, 63.25, 65.46, 66.74, 67.96, 69.49, 
+                     70.51, 70.2, 70.2, 68.55, 65.32, 62.52, 60.99, 59.91]
 
 def twilight_hours_day(latitude, date):
     location = LocationInfo(name="Custom Location", region="Custom Region", latitude=latitude, longitude=0)
@@ -43,7 +45,7 @@ def create_filename():
     os.makedirs(output_dir, exist_ok=True)
     
     timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
-    filename = os.path.join(output_dir, f"goldenhour_duration_{timestamp}.csv")
+    filename = os.path.join(output_dir, f"GH_duration_fullyear_{timestamp}.csv")
     
     print(f"Will save file as: {filename}")
     
@@ -51,7 +53,7 @@ def create_filename():
 
 def main():
     start_time = datetime.now()
-    latitudes = [59.91, 59.13, 59.97, 61.9, 63.25, 65.46, 66.74, 67.96, 69.49, 70.51, 70.2, 70.2, 68.55, 65.32, 62.52, 60.99, 59.91]
+    latitudes = DESIRED_LATITUDES
     
     num_cpus = max(1, int(psutil.cpu_count() * 0.8))
     

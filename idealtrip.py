@@ -92,7 +92,7 @@ def main():
         
         input_file = os.path.join(input_dir, 'latitude_dates.csv')
         output_file = os.path.join(output_dir, 
-                                 f'golden_hour_by_day_{datetime.now().strftime(TIME_FORMAT)}.csv')
+                                 f'GH_times_{datetime.now().strftime(TIME_FORMAT)}.csv')
         
         latitude_dates = read_latitude_data(input_file)
         golden_hours = {

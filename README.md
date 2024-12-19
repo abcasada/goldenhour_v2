@@ -6,7 +6,9 @@ This project also serves as a playground as I explore using AI to help write and
 
 ## GH_daterange
 
-This program is designed to be user friendly. You simply input a start date, an end date, and a city, and it will display the times when golden hour begins and ends on those dates.
+This program is designed to be user friendly. You simply input a start date, an end date, and a city, and it will display the times when golden hour begins and ends on those dates. It only runs on Windows.
+
+To use it, simply download GH_daterange.exe and run it.
 
 It uses `calculate_golden_hours` from `idealtrip.py`.
 

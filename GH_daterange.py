@@ -1,7 +1,7 @@
 """
-This script calculates golden hour times for a given date range and latitude.
-Golden hours are periods when the sun is between -4 and 6 degrees elevation,
-producing optimal lighting conditions for photography.
+This script calculates "golden hour" times for a given date range and latitude.
+It defines golden hour as periods when the sun is between -4 and 6 degrees
+elevation, producing great lighting conditions for photography.
 """
 
 from idealtrip import calculate_golden_hours
@@ -46,8 +46,8 @@ def main():
     # Get and validate date range from user
     while True:
         try:
-            start_date = datetime.strptime(input("Enter start date (YYYY-MM-DD): "), '%Y-%m-%d')
-            end_date = datetime.strptime(input("Enter end date (YYYY-MM-DD): "), '%Y-%m-%d')
+            start_date = datetime.strptime(input("Enter start date  (YYYY-MM-DD): "), '%Y-%m-%d') # extra space before opening parenthesis lines it up with the error message if the user gets to that point.
+            end_date = datetime.strptime(input("Enter end date    (YYYY-MM-DD): "), '%Y-%m-%d') # 3 extra spaces before opening parenthesis to line up with the previous line.
             if end_date < start_date:
                 print("End date must be after start date")
                 continue
@@ -56,7 +56,12 @@ def main():
             print("Invalid date format. Please use YYYY-MM-DD")
     
     # Get and convert latitude to float
-    latitude = float(input("Enter latitude in degrees (47.3456): "))
+    while True:
+        latitude = float(input("Enter latitude in degrees (47.3456): "))
+        if not -90 <= latitude <= 90:
+            print("Latitude must be between -90 and 90 degrees\n")
+            continue
+        break
 
     # Print header with explanation
     print("\n======================================================\n")

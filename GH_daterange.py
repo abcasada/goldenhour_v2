@@ -38,6 +38,11 @@ def main():
     2. Validates input
     3. Calculates and displays golden hours for each day in range
     """
+    
+    print("\nThis program will display the time ranges for ""golden hour"" "
+          "\n(using a definition of 4 degrees below the horizon to "
+          "\n6 degrees above) for a given date range and latitude.\n")
+    
     # Get and validate date range from user
     while True:
         try:
@@ -55,7 +60,7 @@ def main():
 
     # Print header with explanation
     print("\n======================================================\n")
-    print("Following are the periods of time where the sun is \nbetween -4 and 6 degrees elevation:\n")
+    print("Here are your golden hour times:\n")
     
     # Calculate and display golden hours for each day in range
     current_date = start_date
@@ -65,6 +70,9 @@ def main():
         current_date += timedelta(days=1)
     
     print("\n======================================================\n")
+    
+    # Keep window open until user presses Enter
+    input("\nPress Enter to exit...")
 
 if __name__ == '__main__':
     main()

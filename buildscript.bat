@@ -1,0 +1,1 @@
+pyinstaller -F GH_daterange.py

@@ -1,5 +1,6 @@
 import csv
 import logging
+import os
 from datetime import datetime, timedelta
 from pathlib import Path
 from typing import List, Tuple, Dict
@@ -7,6 +8,8 @@ from astral import LocationInfo
 from astral.sun import elevation
 
 # Constants
+INPUT_DIR = "data_input"
+OUTPUT_DIR = "data_output"
 PRECISION = 0.1  # minutes
 GOLDEN_HOUR_MIN_ELEVATION = -4
 GOLDEN_HOUR_MAX_ELEVATION = 6
@@ -80,14 +83,22 @@ def calculate_golden_hours(date: datetime, latitude: float) -> Dict:
 def main():
     """Main program execution."""
     try:
-        latitude_dates = read_latitude_data('latitude_dates.csv')
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        input_dir = os.path.join(script_dir, INPUT_DIR)
+        output_dir = os.path.join(script_dir, OUTPUT_DIR)
+        
+        os.makedirs(input_dir, exist_ok=True)
+        os.makedirs(output_dir, exist_ok=True)
+        
+        input_file = os.path.join(input_dir, 'latitude_dates.csv')
+        output_file = os.path.join(output_dir, 
+                                 f'golden_hour_by_day_{datetime.now().strftime(TIME_FORMAT)}.csv')
+        
+        latitude_dates = read_latitude_data(input_file)
         golden_hours = {
             date: calculate_golden_hours(date, latitude) 
             for date, latitude in latitude_dates
         }
-
-        output_file = f'golden_hour_by_day_{datetime.now().strftime(TIME_FORMAT)}.csv'
-        Path(output_file).parent.mkdir(parents=True, exist_ok=True)
         
         with open(output_file, 'w', newline='') as file:
             writer = csv.writer(file)

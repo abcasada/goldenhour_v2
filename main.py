@@ -3,6 +3,8 @@ from astral import LocationInfo
 from astral.sun import elevation
 from datetime import datetime, timedelta
 import csv #todo: use pandas for xlsx
+import os
+import psutil
 
 PRECISION = 1 # minutes
 
@@ -26,7 +28,7 @@ def twilight_hours_year(latitude):
     data = []
 
     for x in range(365):
-        date = datetime(2023,1,1) + timedelta(x) # or timedelta(days=x)?
+        date = datetime(2023,1,1) + timedelta(x)
         hours_in_range = twilight_hours_day(latitude, date)
         data.append([date.strftime('%Y-%m-%d'), latitude, hours_in_range])
     
@@ -35,13 +37,25 @@ def twilight_hours_year(latitude):
 def process_latitude(latitude):
     return twilight_hours_year(latitude)
 
+def create_filename():
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    output_dir = os.path.join(script_dir, "data_output")
+    os.makedirs(output_dir, exist_ok=True)
+    
+    timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
+    filename = os.path.join(output_dir, f"goldenhour_duration_{timestamp}.csv")
+    
+    print(f"Will save file as: {filename}")
+    
+    return filename
+
 def main():
     start_time = datetime.now()
     latitudes = [59.91, 59.13, 59.97, 61.9, 63.25, 65.46, 66.74, 67.96, 69.49, 70.51, 70.2, 70.2, 68.55, 65.32, 62.52, 60.99, 59.91]
-    timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
-    filename = f"goldenhour_duration_{timestamp}.csv"
     
-    with multiprocessing.Pool() as pool:
+    num_cpus = max(1, int(psutil.cpu_count() * 0.8))
+    
+    with multiprocessing.Pool(processes=num_cpus) as pool:
         results = pool.map(process_latitude, latitudes)
     
     all_data = {}
@@ -53,7 +67,7 @@ def main():
                 all_data[date] = {}
             all_data[date][entry[1]] = hours_in_range
     
-    with open(filename, mode='w', newline='') as file:
+    with open(create_filename(), mode='w', newline='') as file:
         writer = csv.writer(file)
         writer.writerow(["Date"] + [f"{lat}\u00B0" for lat in latitudes])
         for date, lat_data in all_data.items():

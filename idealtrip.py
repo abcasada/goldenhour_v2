@@ -2,7 +2,6 @@ import csv
 import logging
 import os
 from datetime import datetime, timedelta
-from pathlib import Path
 from typing import List, Tuple, Dict
 from astral import LocationInfo
 from astral.sun import elevation
@@ -21,7 +20,10 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 def read_latitude_data(filepath: str) -> List[Tuple[datetime, float]]:
-    """Read dates and latitudes from CSV file."""
+    """
+    Read dates and latitudes from CSV file.
+    Returns a list of tuples containing (date, latitude).
+    """
     latitude_dates = []
     try:
         with open(filepath, 'r') as file:
@@ -42,7 +44,10 @@ def read_latitude_data(filepath: str) -> List[Tuple[datetime, float]]:
     return latitude_dates
 
 def calculate_golden_hours(date: datetime, latitude: float) -> Dict:
-    """Calculate golden hour times for given date and latitude."""
+    """
+    Calculate golden hour times for given date and latitude.
+    Returns a dictionary with morning and evening start/end times.
+    """
     location = LocationInfo(
         name="Custom Location", 
         region="Custom Region", 
@@ -58,22 +63,21 @@ def calculate_golden_hours(date: datetime, latitude: float) -> Dict:
     while current_time <= end_time:
         current_elevation = elevation(location.observer, current_time)
         
-        if (current_time == start_time and 
-            GOLDEN_HOUR_MIN_ELEVATION <= current_elevation <= GOLDEN_HOUR_MAX_ELEVATION):
+        in_range = (GOLDEN_HOUR_MIN_ELEVATION <= current_elevation <= GOLDEN_HOUR_MAX_ELEVATION)
+        out_of_range = (current_elevation < GOLDEN_HOUR_MIN_ELEVATION or 
+                       current_elevation > GOLDEN_HOUR_MAX_ELEVATION)
+        
+        if current_time == start_time and in_range:
             gh_times.append(current_time)
         
-        if (len(gh_times) % 2 == 0 and 
-            GOLDEN_HOUR_MIN_ELEVATION <= current_elevation <= GOLDEN_HOUR_MAX_ELEVATION):
+        if len(gh_times) % 2 == 0 and in_range:
             gh_times.append(current_time)
-        elif (len(gh_times) % 2 == 1 and 
-              (current_elevation < GOLDEN_HOUR_MIN_ELEVATION or 
-               current_elevation > GOLDEN_HOUR_MAX_ELEVATION)):
+        elif len(gh_times) % 2 == 1 and out_of_range:
             gh_times.append(current_time)
         
         current_time += timedelta(minutes=PRECISION)
 
-    if (GOLDEN_HOUR_MIN_ELEVATION <= 
-        elevation(location.observer, end_time) <= 
+    if (GOLDEN_HOUR_MIN_ELEVATION <= elevation(location.observer, end_time) <= 
         GOLDEN_HOUR_MAX_ELEVATION):
         gh_times.append(end_time)
 
@@ -91,8 +95,10 @@ def main():
         os.makedirs(output_dir, exist_ok=True)
         
         input_file = os.path.join(input_dir, 'latitude_dates.csv')
-        output_file = os.path.join(output_dir, 
-                                 f'GH_times_{datetime.now().strftime(TIME_FORMAT)}.csv')
+        output_file = os.path.join(
+            output_dir, 
+            f'GH_times_{datetime.now().strftime(TIME_FORMAT)}.csv'
+        )
         
         latitude_dates = read_latitude_data(input_file)
         golden_hours = {
@@ -102,17 +108,19 @@ def main():
         
         with open(output_file, 'w', newline='') as file:
             writer = csv.writer(file)
-            writer.writerow(['Date', 'Morning Start', 'Morning End', 
-                           'Evening Start', 'Evening End'])
+            header = ['Date', 'Morning Start', 'Morning End', 'Evening Start', 'Evening End']
+            writer.writerow(header)
             
             for date, times in golden_hours.items():
-                writer.writerow([
+                fmt = OUTPUT_TIME_FORMAT
+                row = [
                     date.strftime(DATE_FORMAT),
-                    times['morning_start'].strftime(OUTPUT_TIME_FORMAT) if times['morning_start'] else '',
-                    times['morning_end'].strftime(OUTPUT_TIME_FORMAT) if times['morning_end'] else '',
-                    times['evening_start'].strftime(OUTPUT_TIME_FORMAT) if times['evening_start'] else '',
-                    times['evening_end'].strftime(OUTPUT_TIME_FORMAT) if times['evening_end'] else ''
-                ])
+                    times['morning_start'].strftime(fmt) if times['morning_start'] else '',
+                    times['morning_end'].strftime(fmt) if times['morning_end'] else '',
+                    times['evening_start'].strftime(fmt) if times['evening_start'] else '',
+                    times['evening_end'].strftime(fmt) if times['evening_end'] else ''
+                ]
+                writer.writerow(row)
             
             logger.info(f"Output written to {output_file}")
     except Exception as e:

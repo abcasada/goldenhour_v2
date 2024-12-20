@@ -1,0 +1,4 @@
+Play with having GPU help with calculations
+Add tests for all functions
+Add GUI
+Exclude pyinstaller files from repository

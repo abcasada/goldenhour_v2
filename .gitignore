@@ -1,3 +1,2 @@
-# Ignore all output data files
-.csv
-.xlsx
+/build
+/__pycache__

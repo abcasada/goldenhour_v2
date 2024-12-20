@@ -1,2 +1,4 @@
-/build
-/__pycache__
+# Examples: *.csv, folder/, file.txt
+
+build/
+__pycache__/

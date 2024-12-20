@@ -24,6 +24,13 @@ PRECISION = 1  # minutes
 DESIRED_LATITUDES = [59.91, 59.13, 59.97, 61.9, 63.25, 65.46, 66.74, 67.96, 69.49, 70.51, 70.2,
                      70.2, 68.55, 65.32, 62.52, 60.99, 59.91]
 
+def validate_latitude(latitude: float) -> None:
+    """Validate latitude is within valid range."""
+    if not isinstance(latitude, (int, float)):
+        raise TypeError("Latitude must be a number")
+    if not -90 <= latitude <= 90:
+        raise ValueError("Latitude must be between -90 and 90 degrees")
+
 def twilight_hours_day(latitude: float, date: datetime) -> float:
     """
     Calculate total golden hour duration for a specific date and latitude.
@@ -35,6 +42,9 @@ def twilight_hours_day(latitude: float, date: datetime) -> float:
     Returns:
         float: Total hours of golden hour conditions, rounded to 2 decimals
     """
+    validate_latitude(latitude)
+    if not isinstance(date, datetime):
+        raise TypeError("Date must be a datetime object")
     
     # Create a location to pass to astral.sun.elevation
     location = LocationInfo(
@@ -78,6 +88,7 @@ def twilight_hours_year(latitude: float) -> list:
     Returns:
         list: 365 entries of [date, latitude, hours] for each day of year
     """
+    validate_latitude(latitude)
     data = []
     for x in range(365):
         date = datetime(2023, 1, 1) + timedelta(x)
@@ -95,6 +106,7 @@ def process_latitude(latitude: float) -> list:
     Returns:
         list: Results from twilight_hours_year for the given latitude
     """
+    validate_latitude(latitude)
     return twilight_hours_year(latitude)
 
 def create_filename() -> str:

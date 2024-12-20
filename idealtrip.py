@@ -43,11 +43,22 @@ def read_latitude_data(filepath: str) -> List[Tuple[datetime, float]]:
         raise
     return latitude_dates
 
+def validate_latitude(latitude: float) -> None:
+    """Validate latitude is within valid range."""
+    if not isinstance(latitude, (int, float)):
+        raise TypeError("Latitude must be a number")
+    if not -90 <= latitude <= 90:
+        raise ValueError("Latitude must be between -90 and 90 degrees")
+
 def calculate_golden_hours(date: datetime, latitude: float) -> Dict:
     """
     Calculate golden hour times for given date and latitude.
     Returns a dictionary with morning and evening start/end times.
     """
+    if not isinstance(date, datetime):
+        raise TypeError("Date must be a datetime object")
+    validate_latitude(latitude)
+
     location = LocationInfo(
         name="Custom Location", 
         region="Custom Region", 

@@ -1,3 +1,6 @@
+# MIT License
+# Copyright (c) 2024 Adam Casada
+
 import osmnx as ox
 import networkx as nx
 from geopy.geocoders import Nominatim

@@ -1,3 +1,6 @@
+# MIT License
+# Copyright (c) 2024 Adam Casada
+
 import csv
 import logging
 import os

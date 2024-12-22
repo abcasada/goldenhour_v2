@@ -1,3 +1,6 @@
+# MIT License
+# Copyright (c) 2024 Adam Casada
+
 """
 Calculate golden hour durations throughout the year for multiple latitudes.
 

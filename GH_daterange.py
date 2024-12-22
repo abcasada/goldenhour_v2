@@ -1,3 +1,6 @@
+# MIT License
+# Copyright (c) 2024 Adam Casada
+
 """
 This script calculates golden hour times for a given date range and 
 latitude. It defines golden hour as periods when the sun is between -4 

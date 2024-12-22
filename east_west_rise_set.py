@@ -1,3 +1,6 @@
+# MIT License
+# Copyright (c) 2024 Adam Casada
+
 from astral import LocationInfo
 from astral.sun import sun, azimuth
 from datetime import datetime, timedelta

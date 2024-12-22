@@ -1,5 +1,8 @@
 # Overview
 
+## License
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/abcasada/goldenhour_v2/blob/main/LICENSE) file for details.
+
 ## Introduction
 
 This is my second attempt to build some tools to help me find ideal times for photography in various parts of the world, and explore related things.

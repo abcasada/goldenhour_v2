@@ -2,3 +2,15 @@ Play with having GPU help with calculations
 Add tests for all functions
 Add GUI
 Exclude pyinstaller files from repository
+
+Set up Python version compatibility testing:
+  1. Create basic unit tests in a new /tests directory
+  2. Set up GitHub Actions workflow (.github/workflows/python-compatibility.yml)
+  3. Test against Python versions 3.6 through 3.13
+  4. This will help ensure the code works across different Python versions
+  5. Will need to:
+     - Write tests for core functionality
+     - Handle version-specific imports/features
+     - Set up CI/CD pipeline
+     - Update requirements.txt with version ranges
+     - Document any version-specific considerations

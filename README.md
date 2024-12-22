@@ -61,8 +61,8 @@ Below are the requirements for running the Python scripts natively. (The Windows
 
 ## Python version
 
-Developed on 3.13; should run on 3.6+
+Python 3.6 or higher is required. This project was developed using Python 3.13.
 
 ## Libraries
 
-os, datetime, csv, logging, pathlib, typing, multiprocessing, psutil, astral, geopy
+see [requirements.txt](https://github.com/abcasada/goldenhour_v2/blob/main/requirements.txt)

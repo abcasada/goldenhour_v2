@@ -1,7 +1,6 @@
 Play with having GPU help with calculations
 Add tests for all functions
 Add GUI
-Exclude pyinstaller files from repository
 
 Set up Python version compatibility testing:
   1. Create basic unit tests in a new /tests directory

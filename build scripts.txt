@@ -1,0 +1,10 @@
+### Scratch file with some commands that I use to help with
+### building/maintaining this project - this is not done in
+### a standardized way until I have time to find/learn a
+### standardized way.
+
+### Command to build GH_daterange.exe:
+pyinstaller -F GH_daterange.py
+
+### Command to update requirements.txt:
+pip freeze > requirements.txt

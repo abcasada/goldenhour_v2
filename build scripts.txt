@@ -8,3 +8,6 @@ pyinstaller -F GH_daterange.py
 
 ### Command to update requirements.txt:
 pip freeze > requirements.txt
+
+### Command to check minimum python version with vermin:
+vermin .

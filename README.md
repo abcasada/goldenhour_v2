@@ -19,7 +19,7 @@ There are a few tools here, which are explained below. `GH_daterange` is more us
 
 ## Future plans
 
-Ideally I'll create a GUI that can be used to interact with these tools.
+Ideally I'll create a GUI that can be used to interact with these tools. See more ideas and plans in [todo.txt](https://github.com/abcasada/goldenhour_v2/blob/main/todo.txt).
 
 ## Edge cases
 

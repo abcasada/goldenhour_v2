@@ -1,5 +1,5 @@
 # MIT License
-# Copyright (c) 2024 Adam Casada
+# Copyright (c) 2025 Adam Casada
 
 import osmnx as ox
 import networkx as nx

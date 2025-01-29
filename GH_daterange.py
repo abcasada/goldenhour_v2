@@ -1,5 +1,5 @@
 # MIT License
-# Copyright (c) 2024 Adam Casada
+# Copyright (c) 2025 Adam Casada
 
 """
 This script calculates golden hour times for a given date range and 

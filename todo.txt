@@ -2,7 +2,7 @@ Play with having GPU help with calculations
 Add tests for all functions
 Add GUI
 Move all code into src directory
-Add sun dog feature
+Modify main.py to allow user defined min/max elevation, such as for sun dogs (22 to 30 degrees)
 
 Set up Python version compatibility testing:
   1. Create basic unit tests in a new /tests directory
